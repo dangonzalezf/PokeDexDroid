@@ -52,14 +52,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.pokedexdroid.data.model.repository.PokemonLocalDataSource
+import com.example.pokedexdroid.data.model.repository.PokemonRepository
+import com.example.pokedexdroid.domain.GetAllPokemonUseCase
+import com.example.pokedexdroid.viewmodel.PokemonViewModelFactory
 
 class MainActivity : ComponentActivity() {
-
-    // De esta forma podríamos instanciar al view model desde su factory:
-    //val viewModel : PokemonViewModel by viewModels { PokemonViewModelFactory() }
-    private val viewModel: PokemonViewModel by viewModels()
+    private val localDataSource = PokemonLocalDataSource()
+    private val repository = PokemonRepository(localDataSource)
+    private val getAllPokemonUseCase = GetAllPokemonUseCase(repository)
+    private val viewModel : PokemonViewModel by viewModels { PokemonViewModelFactory(repository) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,10 +72,6 @@ class MainActivity : ComponentActivity() {
                 var loading by remember { mutableStateOf(false) }
                 val modifier = Modifier
 
-                // A surface container using the 'background' color from the theme
-                /*viewModel.loading.observe(this) {
-                    loading = it
-                }*/
                 LaunchedEffect(true) {
                     viewModel.uiState.collect { state ->
                         loading = state.loading
@@ -97,10 +96,6 @@ fun PokemonList(viewModel: PokemonViewModel, modifier: Modifier, mainActivity: M
 
     LaunchedEffect(key1 = true) {
         this.launch {
-            // LiveData observer implementation:
-            /*viewModel.pokemonFirstPageList.observe(mainActivity) {
-            pokemon.addAll(it)
-        }*/
             viewModel.uiState.collect {
                 mainActivity.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     pokemon.addAll(it.pokemonList)
