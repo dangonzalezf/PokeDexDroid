@@ -37,6 +37,7 @@ import coil.compose.AsyncImage
 import com.example.pokedexdroid.MainActivity
 import com.example.pokedexdroid.R
 import com.example.pokedexdroid.data.model.PokemonCardData
+import com.example.pokedexdroid.ui.theme.utils.SoundPlayerManager
 import com.example.pokedexdroid.viewmodel.PokemonViewModel
 import kotlinx.coroutines.launch
 
@@ -48,7 +49,7 @@ class PokemonListScreen {
 
         LaunchedEffect(key1 = true) {
             this.launch {
-                viewModel.uiState.collect {
+                viewModel.pokemonListUiState.collect {
                     mainActivity.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         pokemon.addAll(it.pokemonList)
                     }

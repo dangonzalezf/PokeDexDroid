@@ -8,7 +8,7 @@ import com.example.pokedexdroid.data.model.PokemonCardData
  * not synchronized state. Also help to keep the unidirectional
  * data flow.
  */
-data class UIState(
+data class PokemonListUIState(
   val loading: Boolean = false,
   val pokemonList: List<PokemonCardData> = emptyList()
 )
