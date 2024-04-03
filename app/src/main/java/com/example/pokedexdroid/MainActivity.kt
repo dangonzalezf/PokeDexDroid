@@ -15,18 +15,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.pokedexdroid.ui.theme.PokedexdroidTheme
 import com.example.pokedexdroid.viewmodel.PokemonViewModel
-import com.example.pokedexdroid.data.model.repository.PokemonLocalDataSource
-import com.example.pokedexdroid.data.model.repository.PokemonRepository
-import com.example.pokedexdroid.domain.GetAllPokemonUseCase
 import com.example.pokedexdroid.ui.theme.screen.LoadingScreen
 import com.example.pokedexdroid.ui.theme.screen.PokemonListScreen
-import com.example.pokedexdroid.viewmodel.PokemonViewModelFactory
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * @EntryPoint define que la activity requiere dependencias o
+ * es un punto de entrada para la inyección.
+ * Hay varios componentes que pueden usar esta anotacion:
+ * Activities, fragments,views, services y broadcast receivers,
+ */
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val localDataSource = PokemonLocalDataSource()
-    private val repository = PokemonRepository(localDataSource)
-    private val getAllPokemonUseCase = GetAllPokemonUseCase(repository)
-    private val viewModel : PokemonViewModel by viewModels { PokemonViewModelFactory(getAllPokemonUseCase) }
+
+    private val viewModel: PokemonViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +41,7 @@ class MainActivity : ComponentActivity() {
                 val modifier = Modifier
 
                 LaunchedEffect(true) {
-                    viewModel.uiState.collect { state ->
+                    viewModel.pokemonListUiState.collect { state ->
                         loading = state.loading
                     }
                 }

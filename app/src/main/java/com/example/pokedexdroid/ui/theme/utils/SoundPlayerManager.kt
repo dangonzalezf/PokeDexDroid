@@ -1,4 +1,4 @@
-package com.example.pokedexdroid.ui.theme.screen
+package com.example.pokedexdroid.ui.theme.utils
 
 import android.content.Context
 import android.media.AudioAttributes
