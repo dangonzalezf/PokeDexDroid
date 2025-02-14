@@ -10,5 +10,5 @@ import javax.inject.Inject
  *
  */
 class GetAllPokemonUseCase @Inject constructor(private val repository: PokemonRepository) {
-    suspend operator fun invoke(): List<PokemonCardData> = repository.getFirstPage()
+    suspend operator fun invoke(): List<PokemonCardData> = repository.getPokemonListCardData()
 }
