@@ -6,11 +6,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface RetrofitService {
 
-    @GET("pokemon")
-    suspend fun getPokemonList(): PokemonPage
+    @GET("pokemon") // offset limit 1300, next is null
+    suspend fun getPokemonPage(@Query("offset") offset: String = "0", @Query("limit") limit: String = "20"): PokemonPage
 
     @GET("pokemon/{name}")
     suspend fun getPokemonByName(@Path("name") name: String): PokemonCardData

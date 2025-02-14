@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Pokedexdroid"
 include ':app'
+include ':bottom-sheet-2'
+include ':mylibrary'
+include ':mylibrary2'
